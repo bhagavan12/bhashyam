@@ -11,14 +11,29 @@ var router = express.Router();
 var Branch = require("../models/branch.model");
 // var Zonal = require('../models/zonal.model');
 var Complaint = require("../models/complaints.model");
+const Admin = require("../models/admin.model");
 var Zonal = require("../models/zonal.model");
 var mcurl =
   "mongodb+srv://jvdimvp:Pradeep903@cluster0.d2cwd.mongodb.net/Bhashyam?retryWrites=true&w=majority&appName=Cluster0";
 
 mongoose
   .connect(mcurl)
-  .then(() => {
+  .then(async() => {
     console.log("Connected to MongoDB");
+    const admin = await Admin.findOne({id:"a1234"});
+      if (!admin) {
+        // Create a default admin if none exists
+        const defaultAdmin = new Admin({
+          name: "aname",
+          id: "a1234",
+          password: "123", // Hash this password in production
+        });
+
+        await defaultAdmin.save();
+        console.log("Default admin created successfully");
+      } else {
+        console.log("Admin collection already exists");
+      }
   })
   .catch((err) => {
     console.log(err);
@@ -36,7 +51,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  console.log(req.body);
+  console.log("req.body",req.body);
   if (req.body.empid.charAt(0) === "p") {
     Branch.findOne({
       principal_id: req.body.empid,
@@ -58,7 +73,28 @@ router.post("/login", (req, res) => {
         console.log(err);
         res.json({ msg: "login failed" });
       });
-  } else {
+  }else if (req.body.empid.charAt(0) === 'a') {
+    // Admin login
+    Admin.findOne({
+      id: req.body.empid
+    }).then((admin) => {
+        if (!admin) {
+          console.log("admin",admin);
+          return res.status(404).json({ msg: "Admin not found" });
+        }
+
+        if (admin.password !== req.body.password) {
+          return res.status(401).json({ msg: "Incorrect password" });
+        }
+        console.log("admin",admin);
+        const token = jwt.sign({ ...admin }, "secretkey");
+        res.json({ msg: "success", token, role: "admin" });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json({ msg: "admin login failed" });
+      });
+  }  else {
     Zonal.findOne({
       zonal_id: req.body.empid,
     })

@@ -14,10 +14,14 @@ function Login() {
     console.log(values);
     loginFn(values).then((res) => {
       console.log(res.data);
-      window.localStorage.setItem("token", res.data.token);
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("role", res.data.role);
       if (res.data.msg == "success") {
         if (res.data.role == "principal") {
           navigate("/principal");
+        } else if(res.data.role=="admin"){
+          
+          navigate("/allcomplaints");
         } else {
           navigate("/zonals");
         }

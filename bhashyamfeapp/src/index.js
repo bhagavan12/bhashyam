@@ -23,7 +23,7 @@ import Principal from './features/Principal.jsx';
 import EditBranch from './features/EditBranch.jsx';
 import HomeLogin from './features/Auth/HomeLogin.jsx';
 import ZonalLogin from './features/Auth/ZonalLogin.jsx';
-
+import ProtectedRoute from './features/ProtectedRoute.jsx';
 
 const router = createBrowserRouter([
   {
@@ -58,9 +58,13 @@ const router = createBrowserRouter([
             path:'/complaint',
             element : <Complaints/>
           },
+          // {
+          //   path : '/allcomplaints',
+          //   element : <Callcenter/>
+          // },
           {
-            path : '/allcomplaints',
-            element : <Callcenter/>
+            path: '/allcomplaints',
+            element: <ProtectedRoute element={<Callcenter />} allowedRoles={['admin']} />
           },
           {
             path :'/zonals',
