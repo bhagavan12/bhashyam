@@ -14,6 +14,10 @@ const adminSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-},{collection:"admin"});
+  role: {
+    type: String,
+    required: true,
+  }
+},{collection:"customercares"});
 
-module.exports = mongoose.model("admin", adminSchema);
+module.exports = mongoose.model("customercare", adminSchema);

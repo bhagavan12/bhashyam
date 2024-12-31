@@ -88,7 +88,7 @@ router.post("/login", (req, res) => {
         }
         console.log("admin",admin);
         const token = jwt.sign({ ...admin }, "secretkey");
-        res.json({ msg: "success", token, role: "admin" });
+        res.json({ msg: "success", token, role: admin.role });
       })
       .catch((err) => {
         console.log(err);

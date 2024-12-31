@@ -19,10 +19,12 @@ function Login() {
       if (res.data.msg == "success") {
         if (res.data.role == "principal") {
           navigate("/principal");
-        } else if(res.data.role=="admin"){
+        } else if(res.data.role=="Customercare"){
           
           navigate("/allcomplaints");
-        } else {
+        } else if(res.data.role=="Admin"){
+          navigate("/home");
+        }else {
           navigate("/zonals");
         }
       } 
