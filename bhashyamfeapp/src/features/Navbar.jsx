@@ -69,22 +69,8 @@ const Navbar = ({ routes,role , setRole ,setRoutes}) => {
         navigate('/');
         setRoutes([]);
     }
-    const [filteredRoutes, setFilteredRoutes] = useState([]);
-
-  useEffect(() => {
-    // Filter routes based on user role or login status
-    const updatedRoutes = routes.filter((route) => {
-      if (route.path === "/login" && role) {
-        // Show "Logout" if logged in
-        return true;
-      }
-      if (route.path !== "/login") {
-        return true;
-      }
-      return false;
-    });
-    setFilteredRoutes(updatedRoutes);
-  }, [routes, rolee]);
+    
+  
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
