@@ -25,6 +25,7 @@ const App = () => {
   const [routes, setRoutes] = useState([]);
   const navigate = useNavigate();
   const [role, setRole] = useState(window.localStorage.getItem("role")||"");
+  
   useEffect(() => {
     const role = window.localStorage.getItem("role");
     // setRole(role);
@@ -33,15 +34,19 @@ const App = () => {
       switch (role) {
         case "zonalofficer":
           setRoutes(zonalRoutes);
+          // window.localStorage.setItem("routes",zonalRoutes);
           break;
         case "principal":
           setRoutes(principalRoutes);
+          // window.localStorage.setItem("routes",principalRoutes);
           break;
         case "Customercare":
           setRoutes(customercareRoutes);
+          // window.localStorage.setItem("routes",customercareRoutes)
           break;
         case "Admin":
           setRoutes(adminRoutes);
+          // window.localStorage.setItem("routes",adminRoutes)
           break;
         default:
           navigate("/login"); // Redirect to login if no role is found
@@ -54,6 +59,7 @@ const App = () => {
   return (
     <div>
       <Navbar routes={routes} role={role} setRole={setRole} setRoutes={setRoutes}/>
+      {/* <Navbar  routes={routes} setRole={setRole} setRoutes={setRoutes}/> */}
       <Outlet />
     </div>
   );

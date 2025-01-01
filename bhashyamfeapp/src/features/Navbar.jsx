@@ -55,13 +55,18 @@
 // // }
 
 // // export default Navbar
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { Link, Outlet, useNavigate } from 'react-router-dom'
-
-const Navbar = ({ routes,role , setRole ,setRoutes}) => {
-    const rolee=localStorage.getItem("role");
-    console.log("rolee",rolee);
+import zonalRoutes from "../routes/zonalRoutes";
+import principalRoutes from "../routes/principalRoutes";
+import customercareRoutes from "../routes/customerCareRoutes";
+import adminRoutes from "../routes/adminRoutes"
+const Navbar = ({ routes, role, setRole, setRoutes }) => {
+    // const routes1 = localStorage.getItem("routes");
+    
+    // console.log("rolee", rolee);
+    // console.log("routes1", routes1);
     var navigate = useNavigate();
     function logout() {
         window.localStorage.clear();
@@ -69,8 +74,41 @@ const Navbar = ({ routes,role , setRole ,setRoutes}) => {
         navigate('/');
         setRoutes([]);
     }
+    // const [fetchedroutes, setFetchedRoutes] = useState(localStorage.getItem("routes") || []);
     
-  
+    const rolee = localStorage.getItem("role");
+    useEffect(() => {
+        console.log("rolee",rolee);
+        // setFetchedRoutes(routes);
+        if (rolee) {
+            // Set the routes based on role
+            switch (rolee) {
+                case "zonalofficer":
+                    setRoutes(zonalRoutes);
+                    window.localStorage.setItem("routes", zonalRoutes);
+                    break;
+                case "principal":
+                    setRoutes(principalRoutes);
+                    window.localStorage.setItem("routes", principalRoutes);
+                    break;
+                case "Customercare":
+                    setRoutes(customercareRoutes);
+                    window.localStorage.setItem("routes", customercareRoutes)
+                    break;
+                case "Admin":
+                    setRoutes(adminRoutes);
+                    window.localStorage.setItem("routes", adminRoutes)
+                    break;
+                default:
+                    navigate("/login"); // Redirect to login if no role is found
+                    break;
+            }
+        } else {
+            navigate("/login"); // Redirect to login if role is not found
+        }
+        // console.log("Routes or Role changed:", { fetchedroutes, role });
+    }, [routes, rolee]);
+    // console.log("fetchedroutes", fetchedroutes);
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
